@@ -1,6 +1,7 @@
 package com.example.email_lab
 
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -32,5 +33,16 @@ class MainActivity : AppCompatActivity() {
         emailsRv.adapter = adapter
         // Set layout manager to position the items
         emailsRv.layoutManager = LinearLayoutManager(this)
+
+        // Handle 'Load More' button to fetch next 5 emails
+        findViewById<Button>(R.id.loadMoreBtn).setOnClickListener {
+            // Fetch next 5 emails
+            val newEmails = EmailFetcher.getNext5Emails()
+            // Add the new emails to the adapter's list and the activity's list
+            emails = emails + newEmails
+            adapter.emails = emails
+            // Notify the adapter that the dataset has changed
+            adapter.notifyDataSetChanged()
+        }
     }
 }
